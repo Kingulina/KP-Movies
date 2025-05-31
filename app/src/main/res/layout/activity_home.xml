@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--  GŁÓWNA ZAWARTOŚĆ W SCROLLU  -->
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Awatar + nick -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/baseline_accessibility_24"
+                    android:background="@drawable/avatag_bg"
+                    android:padding="6dp"/>
+
+                <TextView
+                    android:id="@+id/tvNickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nickname"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- ===== Today’s recommendations ===== -->
+            <TextView
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Today’s recommendations"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/imgRec1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@string/app_name"
+                    android:background="#B83E3E"
+                    app:layout_constraintDimensionRatio="2:3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imgRec2"
+                    app:layout_constraintWidth_percent="0.48"/>
+
+                <ImageView
+                    android:id="@+id/imgRec2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#7C5CDD"
+                    app:layout_constraintDimensionRatio="2:3"
+                    app:layout_constraintTop_toTopOf="@id/imgRec1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imgRec1"
+                    app:layout_constraintWidth_percent="0.48"/>
+
+                <TextView
+                    android:id="@+id/tvRecTitle1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/imgRec1"
+                    app:layout_constraintStart_toStartOf="@id/imgRec1"
+                    app:layout_constraintEnd_toEndOf="@id/imgRec1"/>
+
+                <TextView
+                    android:id="@+id/tvRecTitle2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/imgRec2"
+                    app:layout_constraintStart_toStartOf="@id/imgRec2"
+                    app:layout_constraintEnd_toEndOf="@id/imgRec2"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ===== Friends recent activity ===== -->
+            <TextView
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Friends recent activity"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/imgFriend1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#159FA4"
+                    app:layout_constraintDimensionRatio="2:3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imgFriend2"
+                    app:layout_constraintWidth_percent="0.48"/>
+
+                <ImageView
+                    android:id="@+id/imgFriend2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#4ECB83"
+                    app:layout_constraintDimensionRatio="2:3"
+                    app:layout_constraintTop_toTopOf="@id/imgFriend1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imgFriend1"
+                    app:layout_constraintWidth_percent="0.48"/>
+
+                <TextView
+                    android:id="@+id/tvFriendTitle1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/imgFriend1"
+                    app:layout_constraintStart_toStartOf="@id/imgFriend1"
+                    app:layout_constraintEnd_toEndOf="@id/imgFriend1"/>
+
+                <TextView
+                    android:id="@+id/tvFriendTitle2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/imgFriend2"
+                    app:layout_constraintStart_toStartOf="@id/imgFriend2"
+                    app:layout_constraintEnd_toEndOf="@id/imgFriend2"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- DOLNA NAWIGACJA  -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:menu="@menu/bottom_nav"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

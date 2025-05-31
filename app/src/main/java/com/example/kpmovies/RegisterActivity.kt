@@ -29,7 +29,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 else -> {
                     // Tu zapisz użytkownika do bazy lub Firebase
-                    toast("Zarejestrowano – demo ✔")
+                    toast("Zarejestrowano")
                     finish()            // wracamy do ekranu logowania
                 }
             }

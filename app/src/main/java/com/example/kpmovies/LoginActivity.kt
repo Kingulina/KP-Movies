@@ -25,19 +25,16 @@ class LoginActivity : AppCompatActivity() {
             if (login.isBlank() || pass.isBlank()) {
                 toast("Wpisz login i hasło")
             } else {
-                // Tu w przyszłości dodasz prawdziwe logowanie do bazy / Firebase
-                toast("Zalogowano – demo 🙂")
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("nick", login)
+                startActivity(intent)
+                finish()
             }
         }
 
         // 2️⃣  Przejście do rejestracji
         binding.tvGoRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
-        }
-
-        // 3️⃣  Przejście do resetu hasła
-        binding.tvForgot.setOnClickListener {
-            startActivity(Intent(this, ResetPasswordActivity::class.java))
         }
     }
 
