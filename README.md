@@ -19,10 +19,7 @@ Poniżej szczegółowy opis aktualnego stanu projektu.
 3. [Wymagania systemowe](#wymagania-systemowe)  
 4. [Instrukcja uruchomienia](#instrukcja-uruchomienia)  
 5. [Opis głównych ekranów i logika](#opis-głównych-ekranów-i-logika)  
-6. [Materiały graficzne / Zasoby](#materiały-graficzne--zasoby)  
-7. [Pliki i lokalizacje ważnych zasobów](#pliki-i-lokalizacje-wa%C5%BCnych-zasob%C3%B3w)  
-8. [Krótkie plany rozwoju](#kr%C3%B3tkie-plany-rozwoju)  
-9. [Kontakt / Autor](#kontakt--autor)  
+
 
 ---
 
