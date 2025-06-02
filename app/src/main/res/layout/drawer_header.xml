@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@color/black_87"
+    android:layout_height="80dp"
+    android:background="@color/purple_123"
     android:padding="16dp">
 
     <!-- 1) Awatar + Nickname -->
@@ -12,7 +12,7 @@
 android:id="@+id/drawerAvatar"
 android:layout_width="48dp"
 android:layout_height="48dp"
-android:src="@drawable/avatag_bg"
+android:src="@drawable/baseline_accessibility_24"
 android:background="@drawable/avatag_bg"
 android:padding="8dp"
 app:layout_constraintTop_toTopOf="parent"
@@ -26,9 +26,11 @@ android:text="Nickname"
 android:textColor="@android:color/white"
 android:textStyle="bold"
 android:textSize="18sp"
-app:layout_constraintStart_toEndOf="@id/drawerAvatar"
-app:layout_constraintTop_toTopOf="@id/drawerAvatar"
-android:layout_marginStart="12dp"/>
+android:layout_marginStart="12dp"
+    app:layout_constraintStart_toEndOf="@id/drawerAvatar"
+    app:layout_constraintTop_toTopOf="@id/drawerAvatar"
+    app:layout_constraintBottom_toBottomOf="@id/drawerAvatar"/>
+
 
 
 <ImageView

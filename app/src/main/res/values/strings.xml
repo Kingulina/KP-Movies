@@ -7,5 +7,15 @@
     <string name="browse">Browse</string>
     <string name="settings">Settings</string>
     <string name="logout">Log out</string>
+    <string name="regulations">Regulations</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="privacy_settings">Privacy settings</string>
+    <string name="back">Back</string>
+    <string name="watched">Watched</string>
+    <string name="filter">Filter</string>
+    <string name="avatar_placeholder">User avatar</string>
+    <string name="filter_movies">Filter movies</string>
+    <string name="cover_image">Movie cover</string>
+    <string name="nickname">Nickname</string>
 
 </resources>

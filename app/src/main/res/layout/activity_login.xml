@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     android:padding="24dp">
 
+
     <!-- Tytuł -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="KP Movies"
         android:textSize="24sp"
         android:textStyle="bold"

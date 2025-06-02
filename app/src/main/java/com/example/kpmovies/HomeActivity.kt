@@ -45,9 +45,16 @@ class HomeActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_homepage -> {
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
-                    toast("Home page")
                 }
                 /* pozostałe: nav_watchlist, nav_friends, nav_browse, nav_settings -> na razie puste */
+                R.id.nav_settings  -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
+                R.id.nav_watchlist -> {
+                    startActivity(Intent(this, WatchListActivity::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
             }
             true
         }

@@ -11,6 +11,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Register"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -62,6 +63,7 @@
         app:layout_constraintStart_toStartOf="@id/tilPassword"
         app:layout_constraintEnd_toEndOf="@id/tilPassword"
         android:layout_marginTop="16dp">
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etRepeat"
