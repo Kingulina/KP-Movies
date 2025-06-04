@@ -52,7 +52,12 @@ class HomeActivity : AppCompatActivity() {
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
                 }
                 R.id.nav_watchlist -> {
-                    startActivity(Intent(this, WatchListActivity::class.java))
+                    val nick = binding.tvNickname.text.toString()
+                    startActivity(
+                        Intent(this, WatchListActivity::class.java).apply {
+                            putExtra("nick", nick)
+                        }
+                    )
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
                 }
             }

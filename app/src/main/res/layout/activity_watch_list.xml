@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app ="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:fitsSystemWindows="true"
+    app:statusBarBackground="@color/purple_123">   <!-- ten sam kolor belki -->
+
+    <!-- ───── ❶  DOTYCHCZASOWA TREŚĆ ───── -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
 
     <ImageView
         android:id="@+id/ivAvatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/avatag_bg"
+        android:src="@drawable/baseline_accessibility_24"
         android:background="@drawable/avatag_bg"
         android:padding="6dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,42 +50,40 @@
         android:layout_marginEnd="24dp"
         android:contentDescription="@string/filter_movies"/>
 
-    <LinearLayout
-        android:id="@+id/tabsRow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivAvatar"
-        android:layout_marginTop="24dp">
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/tabsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:singleSelection="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivAvatar">
 
-        <Button
-            android:id="@+id/btnWatched"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="120dp"
-            android:layout_height="48dp"
-            android:text="@string/watched"/>
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.KP.TabButton"
+                android:id="@+id/btnWatched"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:text="@string/watched"/>
 
-        <Space
-            android:layout_width="24dp"
-            android:layout_height="0dp"/>
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.KP.TabButton"
+                android:id="@+id/btnWatchList"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
+                android:text="@string/watch_list"/>
 
-        <Button
-            android:id="@+id/btnWatchList"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="120dp"
-            android:layout_height="48dp"
-            android:text="@string/watch_list"/>
-    </LinearLayout>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
 
 
     <ScrollView
         android:id="@+id/scrollPosters"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tabsRow"
+        app:layout_constraintTop_toBottomOf="@id/tabsGroup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -165,3 +172,16 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+    android:fitsSystemWindows="false"
+    app:headerLayout="@layout/drawer_header"
+    app:menu="@menu/drawer_menu"/>
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

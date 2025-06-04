@@ -13,4 +13,14 @@
         <item name="android:textStyle">bold</item>
         <item name="android:text">@null</item> <!-- ustawimy w strings.xml -->
     </style>
+
+    <style name="Widget.KP.TabButton" parent="Widget.Material3.Button">
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="cornerSize">24dp</item>
+        <item name="android:textColor">@android:color/black</item>
+
+        <!-- kolory tła dla stanów -->
+        <item name="backgroundTint">@color/tab_tint</item>
+    </style>
 </resources>
