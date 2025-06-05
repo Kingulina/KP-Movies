@@ -37,7 +37,10 @@ class WatchListActivity : AppCompatActivity() {
         /* ───────── 4. Dolna nawigacja ───────── */
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home   -> finish()                 // wróć do Home
+                R.id.nav_home -> {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }     // wróć do Ho me
                 R.id.nav_search -> toast("Search – demo")
                 R.id.nav_menu   -> toggleDrawer()           // otwórz / zamknij Drawer
             }
@@ -49,10 +52,30 @@ class WatchListActivity : AppCompatActivity() {
         /* ───────── 5. Itemy w DrawerMenu ───────── */
         binding.navView.setNavigationItemSelectedListener { m ->
             when (m.itemId) {
-                R.id.nav_homepage -> finish()   // wracamy do HomeActivity
-                R.id.nav_settings  -> startActivity(Intent(this, SettingsActivity::class.java))
-                // Watch list (nav_watchlist) nic nie robi – jesteśmy tu
+
+                /* ——— Home ——— */
+                R.id.nav_homepage -> {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()                      // zamykamy bieżące WatchListActivity
+                }
+
+                /* ——— Friends ——— */
+                R.id.nav_friends -> {
+                    startActivity(Intent(this, FriendListActivity::class.java))
+                    finish()                      // żeby po „back” nie wracać do watch-list
+                }
+
+                /* ——— Settings ——— */
+                R.id.nav_settings -> startActivity(
+                    Intent(this, SettingsActivity::class.java)
+                )
+
+                /* ——— Watch list ——— */
+                /* jesteśmy już tu – nic nie robimy */
+                R.id.nav_watchlist -> { /* NO-OP */ }
             }
+
+            /* zamknij Drawer niezależnie od wyboru */
             binding.drawerLayout.closeDrawer(GravityCompat.END)
             true
         }

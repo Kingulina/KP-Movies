@@ -60,6 +60,10 @@ class HomeActivity : AppCompatActivity() {
                     )
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
                 }
+                R.id.nav_friends -> {
+                    startActivity(Intent(this, FriendListActivity::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
             }
             true
         }

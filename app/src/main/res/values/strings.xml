@@ -17,5 +17,6 @@
     <string name="filter_movies">Filter movies</string>
     <string name="cover_image">Movie cover</string>
     <string name="nickname">Nickname</string>
+    <string name="friend_list">Friend list:</string>
 
 </resources>
