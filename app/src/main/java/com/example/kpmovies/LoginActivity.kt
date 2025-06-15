@@ -1,10 +1,16 @@
 package com.example.kpmovies
 
+import com.example.kpmovies.data.user.AppDatabase // tylko w RegisterActivity
+import com.example.kpmovies.data.user.UserDao
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kpmovies.databinding.ActivityLoginBinding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -25,10 +31,23 @@ class LoginActivity : AppCompatActivity() {
             if (login.isBlank() || pass.isBlank()) {
                 toast("Wpisz login i hasło")
             } else {
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("nick", login)
-                startActivity(intent)
-                finish()
+                lifecycleScope.launch {
+                    val userDao = AppDatabase.get(applicationContext).userDao()
+                    val user = userDao.getUser(login, pass)
+
+                    withContext(Dispatchers.Main) {
+                        if (user == null) {
+                            toast("Błędny login lub hasło")
+                        } else {
+                            startActivity(
+                                Intent(this@LoginActivity, HomeActivity::class.java).apply {
+                                    putExtra("nick", login)
+                                }
+                            )
+                            finish()
+                        }
+                    }
+                }
             }
         }
 

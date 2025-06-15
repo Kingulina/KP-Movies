@@ -1,9 +1,16 @@
 package com.example.kpmovies
 
+import com.example.kpmovies.data.user.AppDatabase
+import com.example.kpmovies.data.user.UserEntity
+import com.example.kpmovies.data.user.UserDao
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kpmovies.databinding.ActivityRegisterBinding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -16,21 +23,29 @@ class RegisterActivity : AppCompatActivity() {
 
         /* ========  Rejestracja (demo)  ======== */
         binding.btnRegister.setOnClickListener {
-            val login   = binding.etLogin.text.toString()
-            val pass    = binding.etPassword.text.toString()
-            val repeat  = binding.etRepeat.text.toString()
+            val login  = binding.etLogin.text.toString()
+            val pass   = binding.etPassword.text.toString()
+            val repeat = binding.etRepeat.text.toString()
 
             when {
                 login.isBlank() || pass.isBlank() || repeat.isBlank() ->
                     toast("Uzupełnij wszystkie pola")
 
-                pass != repeat ->
-                    toast("Hasła nie są identyczne")
+                pass != repeat -> toast("Hasła nie są identyczne")
 
-                else -> {
-                    // Tu zapisz użytkownika do bazy lub Firebase
-                    toast("Zarejestrowano")
-                    finish()            // wracamy do ekranu logowania
+                else -> lifecycleScope.launch {
+                    val userDao = AppDatabase.get(applicationContext).userDao()
+
+                    if (userDao.exists(login)) {
+                        withContext(Dispatchers.Main) { toast("Login już istnieje") }
+                        return@launch
+                    }
+
+                    userDao.insert(UserEntity(login, pass))
+                    withContext(Dispatchers.Main) {
+                        toast("Zarejestrowano pomyślnie")
+                        finish()              // wracamy do ekranu logowania
+                    }
                 }
             }
         }
