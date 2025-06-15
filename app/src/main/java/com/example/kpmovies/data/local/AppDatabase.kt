@@ -1,18 +1,28 @@
-package com.example.kpmovies.data.user
+package com.example.kpmovies.data.local
 
 import androidx.room.*
 import android.content.Context
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.example.kpmovies.data.local.entity.MovieEntity
+import com.example.kpmovies.data.local.entity.WatchlistEntity
+import com.example.kpmovies.data.local.entity.ReviewEntity
+import com.example.kpmovies.data.user.UserEntity
+import com.example.kpmovies.data.user.FriendEntity
 
 @Database(
-    entities = [UserEntity::class, FriendEntity::class],
-    version = 2,
+    entities = [UserEntity::class, FriendEntity::class, MovieEntity::class, WatchlistEntity::class, ReviewEntity::class
+    ],
+    version = 1,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun movieDao(): MovieDao
+    abstract fun watchlistDao(): WatchlistDao
+    abstract fun reviewDao(): ReviewDao
     abstract fun userDao(): UserDao
     abstract fun friendDao(): FriendDao
 

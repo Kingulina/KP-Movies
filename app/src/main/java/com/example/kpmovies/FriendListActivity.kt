@@ -67,7 +67,7 @@ class FriendListActivity : AppCompatActivity() {
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 }
-                R.id.nav_search -> toast("Search – demo")
+                R.id.nav_search -> startActivity(Intent(this, SearchActivity::class.java))
                 R.id.nav_menu  -> toggleDrawer()
             }
             true

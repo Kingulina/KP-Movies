@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home   -> { /* już jesteśmy na Home */ }
-                R.id.nav_search -> { /* TODO: Search */ }
+                R.id.nav_search -> startActivity(Intent(this, SearchActivity::class.java))
                 R.id.nav_menu   ->  toggleDrawer()
             }
             true

@@ -41,7 +41,7 @@ class WatchListActivity : AppCompatActivity() {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             }     // wróć do Ho me
-                R.id.nav_search -> toast("Search – demo")
+                R.id.nav_search -> startActivity(Intent(this, SearchActivity::class.java))
                 R.id.nav_menu   -> toggleDrawer()           // otwórz / zamknij Drawer
             }
             true
