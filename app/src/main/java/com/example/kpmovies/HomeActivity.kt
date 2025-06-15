@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.kpmovies.databinding.ActivityHomeBinding
+import com.example.kpmovies.SessionManager
 
 class HomeActivity : AppCompatActivity() {
 
@@ -24,10 +25,11 @@ class HomeActivity : AppCompatActivity() {
         binding.drawerLayout.setScrimColor(0x66000000)
 
         /* 1. Nickname przekazany z LoginActivity (opcjonalnie) */
-        intent.getStringExtra("nick")?.let { nick ->
+        SessionManager.getLogin(this)?.let { nick ->
             binding.tvNickname.text = nick
-            val header = binding.navView.getHeaderView(0)
-            header.findViewById<TextView>(R.id.drawerNickname).text = nick
+            binding.navView.getHeaderView(0)           // ← bez pośredniej zmiennej
+                .findViewById<TextView>(R.id.drawerNickname)
+                .text = nick
         }
 
         /* 2. Dolna nawigacja */
@@ -53,15 +55,15 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.nav_watchlist -> {
                     val nick = binding.tvNickname.text.toString()
-                    startActivity(
-                        Intent(this, WatchListActivity::class.java).apply {
-                            putExtra("nick", nick)
-                        }
-                    )
+                    startActivity(Intent(this, WatchListActivity::class.java)
+                        .putExtra("nick", nick))
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
                 }
+
                 R.id.nav_friends -> {
-                    startActivity(Intent(this, FriendListActivity::class.java))
+                    val nick = binding.tvNickname.text.toString()   // ← DODAJ
+                    startActivity(Intent(this, FriendListActivity::class.java)
+                        .putExtra("nick", nick))                   // ← DODAJ
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
                 }
             }
@@ -72,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
         binding.navView.getHeaderView(0)
             .findViewById<ImageView>(R.id.btnLogout)
             .setOnClickListener {
+                SessionManager.clear(this)
                 startActivity(
                     Intent(this, LoginActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

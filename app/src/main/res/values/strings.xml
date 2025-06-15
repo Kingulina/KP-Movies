@@ -18,5 +18,10 @@
     <string name="cover_image">Movie cover</string>
     <string name="nickname">Nickname</string>
     <string name="friend_list">Friend list:</string>
+    <string name="number_of_movies_watched">Number of movies watched:</string>
+    <string name="recently_watched">Recently watched:</string>
+    <string name="add_friends">add friends</string>
+    <string name="title">Title</string>
+    <string name="friends_recent_activity">Friends recent activity</string>
 
 </resources>

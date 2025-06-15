@@ -39,11 +39,10 @@ class LoginActivity : AppCompatActivity() {
                         if (user == null) {
                             toast("Błędny login lub hasło")
                         } else {
-                            startActivity(
-                                Intent(this@LoginActivity, HomeActivity::class.java).apply {
-                                    putExtra("nick", login)
-                                }
-                            )
+                            SessionManager.saveLogin(this@LoginActivity, login)
+
+                            /* putExtra możesz zostawić lub usunąć – nie będzie już potrzebny */
+                            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                             finish()
                         }
                     }

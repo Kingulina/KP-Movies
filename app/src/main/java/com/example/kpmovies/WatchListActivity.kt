@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.example.kpmovies.databinding.ActivityWatchListBinding
+import com.example.kpmovies.SessionManager
 
 class WatchListActivity : AppCompatActivity() {
 
@@ -20,9 +21,8 @@ class WatchListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         /* ───────── 1. Nickname przekazany z Home ───────── */
-        val nick = intent.getStringExtra("nick") ?: "Nickname"
+        val nick = SessionManager.getLogin(this) ?: "Nickname"
         binding.tvNickname.text = nick
-        // jeśli w DrawerHeader też chcesz nick:
         binding.navView.getHeaderView(0)
             .findViewById<TextView>(R.id.drawerNickname).text = nick
 
@@ -61,8 +61,9 @@ class WatchListActivity : AppCompatActivity() {
 
                 /* ——— Friends ——— */
                 R.id.nav_friends -> {
-                    startActivity(Intent(this, FriendListActivity::class.java))
-                    finish()                      // żeby po „back” nie wracać do watch-list
+                    startActivity(Intent(this, FriendListActivity::class.java)
+                        .putExtra("nick", nick))   // ← teraz używamy nick z SessionManager
+                    finish()                    // żeby po „back” nie wracać do watch-list
                 }
 
                 /* ——— Settings ——— */
@@ -83,6 +84,7 @@ class WatchListActivity : AppCompatActivity() {
         binding.navView.getHeaderView(0)
             .findViewById<ImageView>(R.id.btnLogout)
             .setOnClickListener {
+                SessionManager.clear(this)
                 startActivity(
                     Intent(this, LoginActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

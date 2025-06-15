@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation ("com.google.android.material:material:1.11.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)

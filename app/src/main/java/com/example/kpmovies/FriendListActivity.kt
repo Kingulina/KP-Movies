@@ -2,33 +2,62 @@ package com.example.kpmovies
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.kpmovies.databinding.ActivityFriendListBinding
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+import com.example.kpmovies.data.user.AppDatabase
+import com.example.kpmovies.ui.UserAdapter
+import android.widget.TextView
+
+
+
+
 
 class FriendListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFriendListBinding
+    private lateinit var me: String
+    /**  adapter widoczny w całej klasie  */
+    private val adapter = UserAdapter { user ->
+        startActivity(
+            Intent(this, FriendProfileActivity::class.java)
+                .putExtra("me", me)
+                .putExtra("friend", user.login)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFriendListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /* 1️⃣  ustaw nick z Intentu (jeśli jest) */
-        intent.getStringExtra("nick")?.let { nick ->
-            val header = binding.navView.getHeaderView(0)
-            header.findViewById<com.google.android.material.textview.MaterialTextView>(
-                R.id.drawerNickname
-            ).text = nick
+        me = SessionManager.getLogin(this) ?: ""
+        binding.navView.getHeaderView(0)
+            .findViewById<TextView>(R.id.drawerNickname).text = me
+        /* ↴  podpinamy adapter do RecyclerView (rvFriends) */
+        binding.rvFriends.adapter = adapter
+        binding.rvFriends.layoutManager = LinearLayoutManager(this)
+
+        binding.ivAddFriend.setOnClickListener {
+            startActivity(Intent(this, AddFriendsActivity::class.java))
         }
 
-        /* 2️⃣  przycisk „+” – demo */
-        binding.ivAddFriend.setOnClickListener {
-            Toast.makeText(this, "Add friend – TODO", Toast.LENGTH_SHORT).show()
+
+        /* ↴  ładujemy listę obserwowanych */
+        lifecycleScope.launch {
+            val dao  = AppDatabase.get(applicationContext).friendDao()
+            val list = dao.getFriends(me)            // ← używamy zmiennej me
+            withContext(Dispatchers.Main) {
+                adapter.submitList(list)
+            }
         }
 
         /* 3️⃣  dolna nawigacja */
@@ -62,6 +91,7 @@ class FriendListActivity : AppCompatActivity() {
         binding.navView.getHeaderView(0)
             .findViewById<ImageView>(R.id.btnLogout)
             .setOnClickListener {
+                SessionManager.clear(this)
                 startActivity(
                     Intent(this, LoginActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or
@@ -70,6 +100,22 @@ class FriendListActivity : AppCompatActivity() {
                 )
                 finish()
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadFriends()          // <-- dodać
+    }
+
+    private fun loadFriends() {
+        lifecycleScope.launch {
+            val list = AppDatabase.get(applicationContext)
+                .friendDao()
+                .getFriends(me)           // 'me' masz już ustawione
+            withContext(Dispatchers.Main) {
+                adapter.submitList(list)
+            }
+        }
     }
 
     private fun toggleDrawer() = with(binding.drawerLayout) {
