@@ -72,9 +72,10 @@ class WatchListActivity : AppCompatActivity() {
                     Intent(this, SettingsActivity::class.java)
                 )
 
-                /* ——— Watch list ——— */
-                /* jesteśmy już tu – nic nie robimy */
-                R.id.nav_watchlist -> { /* NO-OP */ }
+                R.id.nav_browse -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
             }
 
             /* zamknij Drawer niezależnie od wyboru */

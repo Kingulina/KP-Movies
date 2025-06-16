@@ -20,7 +20,7 @@ import com.example.kpmovies.data.user.FriendDao
 
 @Database(
     entities = [UserEntity::class, FriendEntity::class, MovieEntity::class, WatchlistEntity::class, ReviewEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

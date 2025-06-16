@@ -80,6 +80,10 @@ class FriendListActivity : AppCompatActivity() {
                 R.id.nav_watchlist -> startActivity(Intent(this, WatchListActivity::class.java))
                 R.id.nav_settings  -> startActivity(Intent(this, SettingsActivity::class.java))
                 // nav_friends – jesteśmy już tutaj
+                R.id.nav_browse -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.END)
             true

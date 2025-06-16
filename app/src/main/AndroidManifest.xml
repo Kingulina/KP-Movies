@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KPMovies">
         <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.details.MovieDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".FriendProfileActivity"
             android:exported="false" />
         <activity

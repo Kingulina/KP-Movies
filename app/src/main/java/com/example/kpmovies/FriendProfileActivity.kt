@@ -79,6 +79,10 @@ class FriendProfileActivity : AppCompatActivity() {
 
                 R.id.nav_friends   -> startActivity(Intent(this, FriendListActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
+                R.id.nav_browse -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.END)
             true

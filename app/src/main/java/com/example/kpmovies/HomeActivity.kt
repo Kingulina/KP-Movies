@@ -1,5 +1,6 @@
 package com.example.kpmovies
 
+import android.app.SearchableInfo
 import android.content.Intent
 import android.graphics.Color          // <-- NOWY import
 import android.os.Bundle
@@ -65,6 +66,10 @@ class HomeActivity : AppCompatActivity() {
                     val nick = binding.tvNickname.text.toString()   // ← DODAJ
                     startActivity(Intent(this, FriendListActivity::class.java)
                         .putExtra("nick", nick))                   // ← DODAJ
+                    binding.drawerLayout.closeDrawer(GravityCompat.END)
+                }
+                R.id.nav_browse -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
                 }
             }
