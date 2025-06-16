@@ -13,12 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-import com.example.kpmovies.data.user.AppDatabase
+import com.example.kpmovies.data.local.AppDatabase
 import com.example.kpmovies.ui.UserAdapter
 import android.widget.TextView
-
-
-
+import com.example.kpmovies.ui.search.SearchActivity
 
 
 class FriendListActivity : AppCompatActivity() {

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kpmovies.data.user.AppDatabase
+import com.example.kpmovies.data.local.AppDatabase
 import com.example.kpmovies.data.user.FriendEntity
 import com.example.kpmovies.databinding.ActivityFriendProfileBinding
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.kpmovies.SessionManager
 import android.widget.TextView
+import com.example.kpmovies.ui.search.SearchActivity
 
 class FriendProfileActivity : AppCompatActivity() {
 

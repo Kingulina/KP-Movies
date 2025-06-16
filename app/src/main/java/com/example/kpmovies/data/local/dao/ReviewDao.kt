@@ -5,15 +5,29 @@ import com.example.kpmovies.data.local.entity.ReviewEntity
 
 @Dao
 interface ReviewDao {
+
+    @Query("""
+        SELECT *
+        FROM review
+        WHERE movieId = :movieId
+        ORDER BY createdAt DESC
+    """)
+    suspend fun forMovie(movieId: String): List<ReviewEntity>
+
+    @Query("""
+        SELECT AVG(rating)
+        FROM review
+        WHERE movieId = :movieId
+    """)
+    suspend fun avg(movieId: String): Double?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun add(r: ReviewEntity)
+    suspend fun add(review: ReviewEntity)
 
-    @Query("SELECT * FROM review WHERE movieId=:m ORDER BY created DESC LIMIT 20")
-    suspend fun latest(m: String): List<ReviewEntity>
-
-    @Query("SELECT AVG(rating) FROM review WHERE movieId=:m")
-    suspend fun avg(m: String): Double?
-
-    @Query("SELECT * FROM review WHERE author IN (:authors) ORDER BY created DESC LIMIT 2")
-    suspend fun latestFromUsers(authors: List<String>): List<ReviewEntity>
+    @Query("""
+        DELETE FROM review
+        WHERE movieId = :movieId
+          AND author  = :author
+    """)
+    suspend fun remove(movieId: String, author: String)
 }

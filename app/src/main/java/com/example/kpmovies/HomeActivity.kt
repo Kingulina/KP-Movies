@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.kpmovies.databinding.ActivityHomeBinding
 import com.example.kpmovies.SessionManager
+import com.example.kpmovies.ui.search.SearchActivity
 
 class HomeActivity : AppCompatActivity() {
 

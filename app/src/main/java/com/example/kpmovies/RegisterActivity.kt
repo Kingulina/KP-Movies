@@ -1,6 +1,6 @@
 package com.example.kpmovies
 
-import com.example.kpmovies.data.user.AppDatabase
+import com.example.kpmovies.data.local.AppDatabase
 import com.example.kpmovies.data.user.UserEntity
 import com.example.kpmovies.data.user.UserDao
 import android.os.Bundle

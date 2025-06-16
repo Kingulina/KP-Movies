@@ -1,6 +1,6 @@
 package com.example.kpmovies
 
-import com.example.kpmovies.data.user.AppDatabase // tylko w RegisterActivity
+import com.example.kpmovies.data.local.AppDatabase // tylko w RegisterActivity
 import com.example.kpmovies.data.user.UserDao
 import android.content.Intent
 import android.os.Bundle

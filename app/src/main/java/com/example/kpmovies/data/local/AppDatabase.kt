@@ -11,10 +11,15 @@ import com.example.kpmovies.data.local.entity.WatchlistEntity
 import com.example.kpmovies.data.local.entity.ReviewEntity
 import com.example.kpmovies.data.user.UserEntity
 import com.example.kpmovies.data.user.FriendEntity
+import com.example.kpmovies.data.local.dao.MovieDao
+import com.example.kpmovies.data.local.dao.WatchlistDao
+import com.example.kpmovies.data.local.dao.ReviewDao
+import com.example.kpmovies.data.user.UserDao
+import com.example.kpmovies.data.user.FriendDao
+
 
 @Database(
-    entities = [UserEntity::class, FriendEntity::class, MovieEntity::class, WatchlistEntity::class, ReviewEntity::class
-    ],
+    entities = [UserEntity::class, FriendEntity::class, MovieEntity::class, WatchlistEntity::class, ReviewEntity::class],
     version = 1,
     exportSchema = true
 )
