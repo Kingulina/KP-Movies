@@ -7,18 +7,19 @@ import com.example.kpmovies.data.remote.dto.SearchDto
 import com.example.kpmovies.BuildConfig
 
 interface OmdbService {
+
     @GET("/")
     suspend fun search(
-        @Query("apikey") key: String = BuildConfig.OMDB_KEY,
-        @Query("s") query: String,
-        @Query("type") type: String = "movie"
-    ): SearchDto          // {"Search":[…]}
+        @Query("apikey") key  : String = BuildConfig.OMDB_KEY,
+        @Query("s")      query: String,
+        @Query("type")   type : String = "movie"
+    ): SearchDto
 
     @GET("/")
     suspend fun details(
-        @Query("apikey") key: String = BuildConfig.OMDB_KEY,
-        @Query("i") imdbId: String,
-        @Query("plot") plot: String = "full"
-    ): MovieDto           // pełne info
+        @Query("apikey") key   : String = BuildConfig.OMDB_KEY,
+        @Query("i")      imdbId: String,
+        @Query("plot")   plot  : String = "full"
+    ): MovieDto
 }
 

@@ -1,53 +1,34 @@
 package com.example.kpmovies.ui.details
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity      //  ←  DODAJ TO
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.kpmovies.SessionManager
+import com.example.kpmovies.data.local.AppDatabase
+import com.example.kpmovies.data.local.entity.ReviewEntity
+import com.example.kpmovies.data.local.entity.WatchlistEntity
+import com.example.kpmovies.data.remote.RetrofitBuilder
+import com.example.kpmovies.data.repository.MovieRepository
 import com.example.kpmovies.databinding.ActivityMovieDetailsBinding
+import kotlinx.coroutines.launch
 
 class MovieDetailsActivity : AppCompatActivity() {
 
-    private val id by lazy { intent.getStringExtra("id")!! }
-    private val repo by lazy {
-        MovieRepository(RetrofitBuilder.omdb, AppDatabase.get(this).movieDao())
-    }
-    private val watchDao by lazy { AppDatabase.get(this).watchlistDao() }
-    private val revDao by lazy { AppDatabase.get(this).reviewDao() }
-    private val me by lazy { SessionManager.getLogin(this) ?: "" }
+    private lateinit var b: ActivityMovieDetailsBinding
+    private val imdbId by lazy { intent.getStringExtra("id")!! }
 
-    private lateinit var binding: ActivityMovieDetailsBinding
+    private val repo      by lazy { MovieRepository(RetrofitBuilder.omdb, AppDatabase.get(this).movieDao()) }
+    private val watchDao  by lazy { AppDatabase.get(this).watchlistDao() }
+    private val reviewDao by lazy { AppDatabase.get(this).reviewDao() }
+    private val me        by lazy { SessionManager.getLogin(this) ?: "" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMovieDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        b = ActivityMovieDetailsBinding.inflate(layoutInflater)
+        setContentView(b.root)
 
         lifecycleScope.launch {
-            val dto = repo.details(id)
-            populateUI(dto)
-            refreshAvg(); refreshReviews(); refreshWatchIcon()
-        }
-
-        b.btnAddWatch.setOnClickListener {
-            lifecycleScope.launch {
-                val exists = watchDao.all(me).any { it.movieId == id }
-                if (exists) watchDao.remove(me, id)
-                else watchDao.add(WatchlistEntity(me, id, "TODO"))
-                refreshWatchIcon()
-            }
-        }
-
-        b.btnSaveReview.setOnClickListener {
-            val rating = b.ratingBar.rating.toInt()
-            val text = b.etReview.text.toString()
-            lifecycleScope.launch {
-                revDao.add(ReviewEntity(id, me, rating, text))
-                watchDao.add(WatchlistEntity(me, id, "WATCHED"))
-                refreshAvg(); refreshReviews(); refreshWatchIcon()
-            }
+            /* TODO: pobierz dto = repo.details(imdbId) i wypełnij UI */
         }
     }
-
-    /* helper-y populateUI, refreshAvg, refreshReviews, refreshWatchIcon
-       pomijam dla zwięzłości (ustawiają teksty, adapter recenzji i ikonę)
-     */
 }

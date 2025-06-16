@@ -14,19 +14,25 @@ class MovieAdapter(
     private val items = mutableListOf<MovieEntity>()
 
     fun submitList(list: List<MovieEntity>) {
-        items.clear(); items.addAll(list); notifyDataSetChanged()
+        items.clear()
+        items.addAll(list)
+        notifyDataSetChanged()
     }
 
     inner class VH(val b: RowMovieBinding) : RecyclerView.ViewHolder(b.root)
 
-    override fun onCreateViewHolder(p: ViewGroup, v: Int) =
-        VH(RowMovieBinding.inflate(LayoutInflater.from(p.context), p, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VH(
+        RowMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
 
     override fun getItemCount() = items.size
-    override fun onBindViewHolder(h: VH, i: Int) = h.apply {
-        val m = items[i]
-        b.tvTitle.text = m.title
-        Glide.with(b.imgPoster).load(m.poster).into(b.imgPoster)
-        itemView.setOnClickListener { onClick(m) }
+
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        val m = items[position]
+        with(holder.b) {
+            tvTitle.text = m.title
+            Glide.with(imgPoster).load(m.poster).into(imgPoster)
+        }
+        holder.itemView.setOnClickListener { onClick(m) }
     }
 }
