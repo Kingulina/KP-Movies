@@ -5,23 +5,40 @@ import com.example.kpmovies.data.local.entity.WatchlistEntity
 
 @Dao
 interface WatchlistDao {
-    /** pobierz listę filmów użytkownika */
-    @Query("""
-        SELECT *
-        FROM watchlist
-        WHERE owner = :owner
-    """)
-    suspend fun all(owner: String): List<WatchlistEntity>
 
-    /** dodaj film do watch-listy */
+    /** wstaw lub nadpisz (zmienia status i timestamp) */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun add(item: WatchlistEntity)
+    suspend fun upsert(entry: WatchlistEntity)
 
-    /** usuń film z watch-listy */
-    @Query("""
-        DELETE FROM watchlist
-        WHERE owner   = :owner
-          AND movieId = :movieId
-    """)
+    /** usuń z dowolnego statusu */
+    @Query("DELETE FROM watchlist WHERE owner = :owner AND movieId = :movieId")
     suspend fun remove(owner: String, movieId: String)
+
+    /** oznacz jako oglądane, zachowując timestamp = teraz */
+    @Query("""
+      UPDATE watchlist 
+      SET status = 'WATCHED', timestamp = :now 
+      WHERE owner = :owner AND movieId = :movieId
+    """)
+    suspend fun markWatched(owner: String, movieId: String, now: Long)
+
+    /** znajdź konkretny wpis */
+    @Query("SELECT * FROM watchlist WHERE owner = :owner AND movieId = :movieId LIMIT 1")
+    suspend fun find(owner: String, movieId: String): WatchlistEntity?
+
+    /** lista TODO */
+    @Query("""
+      SELECT * FROM watchlist 
+      WHERE owner = :owner AND status = 'TODO' 
+      ORDER BY timestamp DESC
+    """)
+    suspend fun watchList(owner: String): List<WatchlistEntity>
+
+    /** lista WATCHED */
+    @Query("""
+      SELECT * FROM watchlist 
+      WHERE owner = :owner AND status = 'WATCHED' 
+      ORDER BY timestamp DESC
+    """)
+    suspend fun watched(owner: String): List<WatchlistEntity>
 }

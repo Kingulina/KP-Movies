@@ -10,4 +10,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black_87">#DE000000</color>
     <color name="kp_light_purple">#D1B5F4</color>
+    <color name="placeholder_rec1">#B83E3E</color>
+    <color name="placeholder_rec2">#7C5CDD</color>
 </resources>

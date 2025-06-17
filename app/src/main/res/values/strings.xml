@@ -23,5 +23,9 @@
     <string name="add_friends">add friends</string>
     <string name="title">Title</string>
     <string name="friends_recent_activity">Friends recent activity</string>
+    <string name="watched_with_count">Watched (%1$d)</string>
+    <string name="rating">%1$d stars</string>
+    <string name="todays_recommendations">Todays recommendations</string>
+
 
 </resources>

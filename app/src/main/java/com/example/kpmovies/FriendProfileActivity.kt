@@ -18,116 +18,175 @@ import com.example.kpmovies.SessionManager
 import android.widget.TextView
 import com.example.kpmovies.ui.search.SearchActivity
 
+import com.example.kpmovies.ui.adapters.FriendRecentAdapter
+import com.example.kpmovies.ui.adapters.FriendRecentItem
+import com.example.kpmovies.ui.details.MovieDetailsActivity
+
 class FriendProfileActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityFriendProfileBinding
-    private lateinit var me: String
+    /* -------- pola -------- */
+    private lateinit var b: ActivityFriendProfileBinding
+    private lateinit var me:     String
     private lateinit var friend: String
-    private val dao by lazy { AppDatabase.get(applicationContext).friendDao() }
 
+    /** DAO-y z pojedynczej instancji bazy */
+    private val db   by lazy { AppDatabase.get(this) }
+    private val fDao by lazy { db.friendDao() }
+
+    /** adapter do poziomego paska „Recently watched” */
+    private lateinit var recentAdapter: FriendRecentAdapter
+
+    /* ==================== onCreate ==================== */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFriendProfileBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        b = ActivityFriendProfileBinding.inflate(layoutInflater)
+        setContentView(b.root)
 
-        /* ── Parametry przekazane w Intent ── */
-        me     = SessionManager.getLogin(this) ?: ""          // ⬅︎ z SharedPrefs
+        /* ─── login „ja” i obserwowany „friend” ─── */
+        me     = SessionManager.getLogin(this) ?: ""
         friend = intent.getStringExtra("friend") ?: ""
 
-        binding.navView.getHeaderView(0)
+        /* ─── header Drawer ─── */
+        b.navView.getHeaderView(0)
             .findViewById<TextView>(R.id.drawerNickname).text = me
 
-        /* ── UI podstawowe ── */
-        binding.tvUsername.text = friend
-        binding.recyclerRecentlyWatched.layoutManager = LinearLayoutManager(this)
+        /* ─── podstawowe pola UI ─── */
+        b.tvUsername.text = friend
 
-        /* ── PLUS / KOSZ ── */
+        /* ▼▼  poziomy Recycler z ostatnimi filmami  ▼▼ */
+        recentAdapter = FriendRecentAdapter { openMovie(it.movieId) }
+
+        b.recyclerRecentlyWatched.apply {
+            layoutManager = LinearLayoutManager(
+                this@FriendProfileActivity,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = recentAdapter
+            // ładny odstęp od krawędzi
+            val pad = resources.getDimensionPixelSize(R.dimen.dp16)
+            setPadding(pad, 16dp, pad / 4, 0)
+            clipToPadding = false
+            androidx.recyclerview.widget.LinearSnapHelper().attachToRecyclerView(this)
+        }
+        /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
+
+        /* ─── ikonka „dodaj / usuń znajomego” ─── */
         lifecycleScope.launch { refreshIcon() }
-        binding.ivAction.setOnClickListener {
+        b.ivAction.setOnClickListener {
             lifecycleScope.launch {
-                if (dao.isFriend(me, friend)) {
-                    dao.remove(FriendEntity(owner = me, followee = friend))
-                } else {
-                    dao.add(FriendEntity(owner = me, followee = friend))
-                }
+                if (fDao.isFriend(me, friend))
+                    fDao.remove(FriendEntity(me, friend))
+                else
+                    fDao.add   (FriendEntity(me, friend))
                 refreshIcon()
             }
         }
 
-        /* ─────────────────────
-           ▼▼  DOLNA NAWIGACJA  ▼▼
-           ───────────────────── */
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    startActivity(Intent(this, HomeActivity::class.java)); finish()
-                }
-                R.id.nav_search -> startActivity(Intent(this, SearchActivity::class.java))
-                R.id.nav_menu   -> toggleDrawer()
-            }
-            true
-        }
-        // nic nie podświetlamy – jesteśmy „poza” głównymi zakładkami
+        /* ─── bottom–nav, drawer, logout – BEZ ZMIAN ─── */
+        setupNavigation()
 
-        /* ───────── DrawerMenu ───────── */
-        binding.navView.setNavigationItemSelectedListener { m ->
-            when (m.itemId) {
-                R.id.nav_homepage -> {
-                    startActivity(Intent(this, HomeActivity::class.java)); finish()
-                }
-                R.id.nav_watchlist -> startActivity(Intent(this, WatchListActivity::class.java))
+        /* ─── wczytaj listę ostatnio obejrzanych filmów ─── */
+        lifecycleScope.launch { loadRecentlyWatched() }
 
-                R.id.nav_friends   -> startActivity(Intent(this, FriendListActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
-                R.id.nav_browse -> {
-                    startActivity(Intent(this, SearchActivity::class.java))
-                    binding.drawerLayout.closeDrawer(GravityCompat.END)
-                }
-            }
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
-            true
-        }
-
-        /* ── Logout w headerze Drawer ── */
-        binding.navView.getHeaderView(0)
-            .findViewById<ImageView>(R.id.btnLogout)
-            .setOnClickListener {
-                SessionManager.clear(this)
-                startActivity(
-                    Intent(this, LoginActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    }
-                )
-                finish()
-            }
-
-        /* ── przezroczysty scrim ── */
-        binding.drawerLayout.setScrimColor(0x66000000)
+        /* pół-przezroczysty scrim */
+        b.drawerLayout.setScrimColor(0x66000000)
     }
 
-    /* --------------  Funkcje pomocnicze  -------------- */
+    /* ====================================================== */
+    /* ===============  Funkcje pomocnicze  ================== */
+    /* ====================================================== */
 
-    private fun toggleDrawer() = with(binding.drawerLayout) {
-        if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END)
-        else                                 openDrawer(GravityCompat.END)
-    }
+    private fun openMovie(id: String) =
+        startActivity(Intent(this, MovieDetailsActivity::class.java).putExtra("id", id))
 
+    /** odśwież iconkę „+ / kosz” */
     private suspend fun refreshIcon() {
-        val isFriend = dao.isFriend(me, friend)
+        val isFriend = fDao.isFriend(me, friend)
         withContext(Dispatchers.Main) {
-            binding.ivAction.setImageResource(
-                if (isFriend) R.drawable.baseline_delete_forever_24 else R.drawable.baseline_add_24
+            b.ivAction.setImageResource(
+                if (isFriend) R.drawable.baseline_delete_forever_24
+                else           R.drawable.baseline_add_24
             )
         }
     }
 
-    private fun toast(msg: String) =
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    /** pobiera ostatnie recenzje przyjaciela i wyświetla je w pasku */
+    private fun loadRecentlyWatched() = lifecycleScope.launch {
 
+        val reviews = withContext(Dispatchers.IO) {
+            // ostatnie 30 recenzji tego użytkownika
+            AppDatabase.get(this@FriendProfileActivity)
+                .reviewDao()
+                .latestByUsers(listOf(friend), 30)
+        }
+
+        // mapowanie ReviewEntity → FriendRecentItem
+        val items = reviews.mapNotNull { rev ->
+            val m = AppDatabase.get(this@FriendProfileActivity)
+                .movieDao()
+                .one(rev.movieId) ?: return@mapNotNull null
+
+            FriendRecentItem(
+                movieId    = rev.movieId,
+                posterUrl  = m.poster,
+                movieTitle = m.title,
+                rating     = rev.rating
+            )
+        }
+
+        /* --- wracamy na główny wątek i podajemy listę adapterowi --- */
+        recentAdapter.submitList(items)
+    }
+
+    /* ===== Drawer open/close ===== */
+    private fun toggleDrawer() = with(b.drawerLayout) {
+        if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END)
+        else                                 openDrawer(GravityCompat.END)
+    }
+
+    /* ===== bottom-nav, drawer-menu & logout ===== */
+    private fun setupNavigation() {
+        /* dolna navi */
+        b.bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home   -> { startActivity(Intent(this, HomeActivity::class.java)); finish() }
+                R.id.nav_search ->   startActivity(Intent(this, SearchActivity::class.java))
+                R.id.nav_menu   ->   toggleDrawer()
+            }; true
+        }
+        /* drawer menu */
+        b.navView.setNavigationItemSelectedListener { m ->
+            when (m.itemId) {
+                R.id.nav_homepage  -> { startActivity(Intent(this, HomeActivity::class.java)); finish() }
+                R.id.nav_watchlist ->   startActivity(Intent(this, WatchListActivity::class.java))
+                R.id.nav_friends   ->   startActivity(Intent(this, FriendListActivity::class.java))
+                R.id.nav_settings  ->   startActivity(Intent(this, SettingsActivity::class.java))
+                R.id.nav_browse    ->   startActivity(Intent(this, SearchActivity::class.java))
+            }
+            b.drawerLayout.closeDrawer(GravityCompat.END); true
+        }
+        /* logout */
+        b.navView.getHeaderView(0)
+            .findViewById<ImageView>(R.id.btnLogout)
+            .setOnClickListener {
+                SessionManager.clear(this)
+                startActivity(
+                    Intent(this, LoginActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                ); finish()
+            }
+    }
+
+    /* ===== Back closes Drawer ===== */
     override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.END))
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
+        if (b.drawerLayout.isDrawerOpen(GravityCompat.END))
+            b.drawerLayout.closeDrawer(GravityCompat.END)
         else
             super.onBackPressed()
     }
+
+    /* ===== krótki Toast (nieużywany, zostawiam) ===== */
+    private fun toast(msg: String) =
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

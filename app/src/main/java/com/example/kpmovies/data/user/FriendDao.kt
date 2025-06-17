@@ -26,4 +26,9 @@ interface FriendDao {
         ORDER BY u.login
     """)
     suspend fun getFriends(owner: String): List<UserEntity>
+
+    @Query("SELECT followee FROM friends WHERE owner = :owner")
+    suspend fun followsOf(owner: String): List<String>
+
+
 }

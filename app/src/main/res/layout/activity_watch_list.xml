@@ -6,65 +6,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:statusBarBackground="@color/purple_123">   <!-- ten sam kolor belki -->
+    app:statusBarBackground="@color/purple_123">
 
-    <!-- ───── ❶  DOTYCHCZASOWA TREŚĆ ───── -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
-
-    <ImageView
-        android:id="@+id/ivAvatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/baseline_accessibility_24"
-        android:background="@drawable/avatag_bg"
-        android:padding="6dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="20dp" />
+        <!-- avatar + nick -->
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_accessibility_24"
+            android:background="@drawable/avatag_bg"
+            android:padding="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:id="@+id/tvNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="12dp"
             android:text="Nickname"
             android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ivAvatar"
             app:layout_constraintBottom_toBottomOf="@id/ivAvatar"
-            app:layout_constraintStart_toEndOf="@id/ivAvatar" />
+            android:layout_marginStart="8dp"/>
 
-        <ImageView
-        android:id="@+id/ivFilter"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:src="@drawable/filter"
-        app:tint="@color/black_87"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ivAvatar"
-        android:layout_marginEnd="24dp"
-        android:contentDescription="@string/filter_movies"/>
 
+        <!-- toggle group -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/tabsGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:singleSelection="true"
+            app:layout_constraintTop_toBottomOf="@id/ivAvatar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivAvatar">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.KP.TabButton"
                 android:id="@+id/btnWatched"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
+                android:minWidth="120dp"
                 android:layout_height="48dp"
-                android:text="@string/watched"/>
+                android:text="@string/watched" />
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.KP.TabButton"
@@ -75,100 +65,28 @@
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
+        <!-- TU DODAJEMY RECYCLER VIEW zamiast statycznych posterów -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tabsGroup"
+            app:layout_constraintBottom_toTopOf="@id/bottomNav"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-
-
-    <ScrollView
-        android:id="@+id/scrollPosters"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tabsGroup"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:importantForAccessibility="no" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- dolna nawigacja -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- pierwszy rząd -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#B83E3E"
-                    app:layout_constraintDimensionRatio="2:3"
-                    android:layout_weight="1"
-                    android:contentDescription="@null" />
-
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="0dp"/>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#6A45D2"
-                    app:layout_constraintDimensionRatio="2:3"
-                    android:layout_weight="1"
-                    android:contentDescription="@null" />
-            </LinearLayout>
-
-            <!-- odstęp -->
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="16dp"/>
-
-            <!-- drugi rząd -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#14B8A6"
-                    app:layout_constraintDimensionRatio="2:3"
-                    android:layout_weight="1"
-                    android:contentDescription="@null" />
-
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="0dp"/>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#861657"
-                    app:layout_constraintDimensionRatio="2:3"
-                    android:layout_weight="1"
-                    android:contentDescription="@null" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- ───── DOLNA NAWIGACJA ───── -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:menu="@menu/bottom_nav"
-        app:labelVisibilityMode="labeled"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            android:background="@color/white"
+            app:menu="@menu/bottom_nav"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -177,10 +95,8 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-    android:fitsSystemWindows="false"
-    app:headerLayout="@layout/drawer_header"
-    app:menu="@menu/drawer_menu"/>
-
-
+        android:fitsSystemWindows="false"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
