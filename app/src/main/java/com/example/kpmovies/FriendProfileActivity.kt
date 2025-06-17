@@ -21,6 +21,8 @@ import com.example.kpmovies.ui.search.SearchActivity
 import com.example.kpmovies.ui.adapters.FriendRecentAdapter
 import com.example.kpmovies.ui.adapters.FriendRecentItem
 import com.example.kpmovies.ui.details.MovieDetailsActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class FriendProfileActivity : AppCompatActivity() {
 
@@ -57,17 +59,18 @@ class FriendProfileActivity : AppCompatActivity() {
         recentAdapter = FriendRecentAdapter { openMovie(it.movieId) }
 
         b.recyclerRecentlyWatched.apply {
-            layoutManager = LinearLayoutManager(
+            // ► 2-kolumnowa siatka, przewijana pionowo
+            layoutManager = GridLayoutManager(
                 this@FriendProfileActivity,
-                LinearLayoutManager.HORIZONTAL,
+                2,                         // spanCount = 2 kolumny
+                RecyclerView.VERTICAL,
                 false
             )
-            adapter = recentAdapter
-            // ładny odstęp od krawędzi
+            adapter        = recentAdapter
+            // odstępy od krawędzi
             val pad = resources.getDimensionPixelSize(R.dimen.dp16)
-            setPadding(pad, 16dp, pad / 4, 0)
+            setPadding(pad, pad, pad, pad)
             clipToPadding = false
-            androidx.recyclerview.widget.LinearSnapHelper().attachToRecyclerView(this)
         }
         /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 
@@ -82,12 +85,17 @@ class FriendProfileActivity : AppCompatActivity() {
                 refreshIcon()
             }
         }
-
+        me = SessionManager.getLogin(this) ?: ""
+        b.navView.getHeaderView(0)
+            .findViewById<TextView>(R.id.drawerNickname).text = me
         /* ─── bottom–nav, drawer, logout – BEZ ZMIAN ─── */
         setupNavigation()
 
         /* ─── wczytaj listę ostatnio obejrzanych filmów ─── */
-        lifecycleScope.launch { loadRecentlyWatched() }
+        lifecycleScope.launch {
+            loadRecentlyWatched()
+            loadStats()              //  <-- tutaj
+        }
 
         /* pół-przezroczysty scrim */
         b.drawerLayout.setScrimColor(0x66000000)
@@ -99,6 +107,13 @@ class FriendProfileActivity : AppCompatActivity() {
 
     private fun openMovie(id: String) =
         startActivity(Intent(this, MovieDetailsActivity::class.java).putExtra("id", id))
+
+    private fun loadStats() = lifecycleScope.launch(Dispatchers.IO) {
+        val moviesCnt = db.watchlistDao().watchedCount(friend)   // ① pobierz liczbę
+        withContext(Dispatchers.Main) {
+            b.tvMoviesWatched.text = moviesCnt.toString()        // ② ustaw w UI
+        }
+    }
 
     /** odśwież iconkę „+ / kosz” */
     private suspend fun refreshIcon() {

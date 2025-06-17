@@ -178,7 +178,6 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="209dp"
                         android:layout_height="wrap_content"
-
                         android:isIndicator="false"
                         android:numStars="10"
                         android:scaleX="1.8"

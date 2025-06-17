@@ -88,13 +88,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRecentlyWatched"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:clipToPadding="false"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:overScrollMode="never"
-            tools:listitem="@layout/row_friend_recent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/tvRecentlyLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        tools:listitem="@layout/row_friend_recent" />
 
         <!-- ⑦ dolna nawigacja -->
         <com.google.android.material.bottomnavigation.BottomNavigationView

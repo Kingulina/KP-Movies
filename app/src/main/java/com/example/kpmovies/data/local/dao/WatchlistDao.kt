@@ -41,4 +41,7 @@ interface WatchlistDao {
       ORDER BY timestamp DESC
     """)
     suspend fun watched(owner: String): List<WatchlistEntity>
+
+    @Query("SELECT COUNT(*) FROM watchlist WHERE owner = :owner AND status = 'WATCHED'")
+    suspend fun watchedCount(owner: String): Int
 }
