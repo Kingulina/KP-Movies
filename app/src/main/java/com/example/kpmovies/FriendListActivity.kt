@@ -123,6 +123,4 @@ class FriendListActivity : AppCompatActivity() {
             openDrawer(GravityCompat.END)
     }
 
-    private fun toast(msg: String) =
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

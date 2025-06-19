@@ -14,8 +14,6 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE id=:id")
     suspend fun one(id: String): MovieEntity?
 
-    @Query("SELECT * FROM movies ORDER BY RANDOM() LIMIT :n")
-    suspend fun random(n: Int): List<MovieEntity>
     @Query("SELECT * FROM movies")
     suspend fun all(): List<MovieEntity>
 }
