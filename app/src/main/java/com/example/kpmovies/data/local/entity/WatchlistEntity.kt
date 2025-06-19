@@ -2,7 +2,7 @@ package com.example.kpmovies.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
+
 
 @Entity(
     tableName = "watchlist",

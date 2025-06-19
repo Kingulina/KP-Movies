@@ -23,4 +23,6 @@
         <!-- kolory tła dla stanów -->
         <item name="backgroundTint">@color/tab_tint</item>
     </style>
+
+
 </resources>

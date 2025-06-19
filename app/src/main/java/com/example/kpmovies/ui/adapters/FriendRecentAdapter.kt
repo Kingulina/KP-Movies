@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.kpmovies.R
 import com.example.kpmovies.databinding.RowFriendRecentBinding
 
-/** 1 kafelek w poziomej liście „Recently watched”. */
+
 class FriendRecentAdapter(
     private val click : (FriendRecentItem) -> Unit
 ) : RecyclerView.Adapter<FriendRecentAdapter.VH>() {
@@ -47,7 +47,6 @@ class FriendRecentAdapter(
     }
 }
 
-/* POJ-ka na dane adaptera */
 data class FriendRecentItem(
     val movieId   : String,
     val posterUrl : String,

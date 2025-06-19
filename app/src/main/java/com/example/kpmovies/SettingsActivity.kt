@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.tvPrivacySettings.setOnClickListener { toast("Privacy settings – TODO") }
 
         binding.ivBack.setOnClickListener {
-            finish()               // wraca do HomeActivity
+            finish()
         }
         /* Wylogowanie */
         binding.tvLogout.setOnClickListener {

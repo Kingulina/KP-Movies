@@ -2,7 +2,6 @@
 <resources>
 
     <style name="Theme.KPMovies" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Kolory dark mode – możesz zamienić na własne -->
     </style>
 
 </resources>

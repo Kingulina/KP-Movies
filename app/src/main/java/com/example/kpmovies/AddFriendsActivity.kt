@@ -3,7 +3,7 @@ package com.example.kpmovies
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kpmovies.databinding.ActivityAddFriendsBinding
-import com.example.kpmovies.ui.UserAdapter
+import com.example.kpmovies.ui.adapters.UserAdapter
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ class AddFriendsActivity : AppCompatActivity() {
     private val adapter = UserAdapter { user ->
         startActivity(
             Intent(this, FriendProfileActivity::class.java)
-                .putExtra("friend", user.login)    // ← 'me' już niepotrzebne
+                .putExtra("friend", user.login)
         )
     }
 
@@ -40,6 +40,10 @@ class AddFriendsActivity : AppCompatActivity() {
         binding.etSearch.addTextChangedListener { txt ->
             loadUsers(txt.toString())
         }
+
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
     }
 
     /** pobiera i wstawia listę użytkowników zawierających query */
@@ -47,7 +51,7 @@ class AddFriendsActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val list = AppDatabase.get(applicationContext)
                 .userDao()
-                .searchUsers(query, me)          // ← filtruje „nie pokazuj mnie”
+                .searchUsers(query, me)
             withContext(Dispatchers.Main) {
                 adapter.submitList(list)
             }

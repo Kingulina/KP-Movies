@@ -1,4 +1,4 @@
-package com.example.kpmovies.ui.adapter
+package com.example.kpmovies.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

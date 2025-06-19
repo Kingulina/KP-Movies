@@ -2,7 +2,6 @@ package com.example.kpmovies
 
 import com.example.kpmovies.data.local.AppDatabase
 import com.example.kpmovies.data.user.UserEntity
-import com.example.kpmovies.data.user.UserDao
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +20,6 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /* ========  Rejestracja (demo)  ======== */
         binding.btnRegister.setOnClickListener {
             val login  = binding.etLogin.text.toString()
             val pass   = binding.etPassword.text.toString()
@@ -44,13 +42,12 @@ class RegisterActivity : AppCompatActivity() {
                     userDao.insert(UserEntity(login, pass))
                     withContext(Dispatchers.Main) {
                         toast("Zarejestrowano pomyślnie")
-                        finish()              // wracamy do ekranu logowania
+                        finish()
                     }
                 }
             }
         }
 
-        /* -------- powrót „Log in” -------- */
         binding.tvGoLogin.setOnClickListener { finish() }
     }
 

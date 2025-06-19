@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 import com.example.kpmovies.data.local.AppDatabase
-import com.example.kpmovies.ui.UserAdapter
+import com.example.kpmovies.ui.adapters.UserAdapter
 import android.widget.TextView
 import com.example.kpmovies.ui.search.SearchActivity
 
@@ -23,7 +22,7 @@ class FriendListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFriendListBinding
     private lateinit var me: String
-    /**  adapter widoczny w całej klasie  */
+
     private val adapter = UserAdapter { user ->
         startActivity(
             Intent(this, FriendProfileActivity::class.java)
@@ -49,16 +48,14 @@ class FriendListActivity : AppCompatActivity() {
         }
 
 
-        /* ↴  ładujemy listę obserwowanych */
         lifecycleScope.launch {
             val dao  = AppDatabase.get(applicationContext).friendDao()
-            val list = dao.getFriends(me)            // ← używamy zmiennej me
+            val list = dao.getFriends(me)
             withContext(Dispatchers.Main) {
                 adapter.submitList(list)
             }
         }
 
-        /* 3️⃣  dolna nawigacja */
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -70,7 +67,7 @@ class FriendListActivity : AppCompatActivity() {
             }
             true
         }
-        // podświetlamy lupkę, bo jesteśmy na „środkowym” ekranie
+
         binding.bottomNav.menu.findItem(R.id.nav_search).isChecked = true
 
         /* 4️⃣  DrawerMenu */
@@ -79,7 +76,6 @@ class FriendListActivity : AppCompatActivity() {
                 R.id.nav_homepage  -> startActivity(Intent(this, HomeActivity::class.java))
                 R.id.nav_watchlist -> startActivity(Intent(this, WatchListActivity::class.java))
                 R.id.nav_settings  -> startActivity(Intent(this, SettingsActivity::class.java))
-                // nav_friends – jesteśmy już tutaj
                 R.id.nav_browse -> {
                     startActivity(Intent(this, SearchActivity::class.java))
                     binding.drawerLayout.closeDrawer(GravityCompat.END)
@@ -106,14 +102,14 @@ class FriendListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loadFriends()          // <-- dodać
+        loadFriends()
     }
 
     private fun loadFriends() {
         lifecycleScope.launch {
             val list = AppDatabase.get(applicationContext)
                 .friendDao()
-                .getFriends(me)           // 'me' masz już ustawione
+                .getFriends(me)
             withContext(Dispatchers.Main) {
                 adapter.submitList(list)
             }

@@ -2,7 +2,6 @@ package com.example.kpmovies.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -13,11 +12,8 @@ import com.example.kpmovies.data.repository.MovieRepository
 import com.example.kpmovies.databinding.ActivitySearchBinding
 import com.example.kpmovies.ui.adapter.MovieAdapter
 import com.example.kpmovies.ui.details.MovieDetailsActivity
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.google.android.material.search.SearchBar
-import com.google.android.material.search.SearchView
 import kotlinx.coroutines.Dispatchers
 
 class SearchActivity : AppCompatActivity() {
@@ -32,7 +28,6 @@ class SearchActivity : AppCompatActivity() {
         )
     }
 
-    // adapter RecyclerView
     private val adapter = MovieAdapter { movie ->
         // kliknięcie na element listy: przejdź do MovieDetailsActivity
         val intent = Intent(this, MovieDetailsActivity::class.java)
@@ -45,7 +40,6 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Ustaw RecyclerView
         binding.rvMovies.layoutManager = LinearLayoutManager(this)
         binding.rvMovies.adapter = adapter
 
@@ -53,8 +47,10 @@ class SearchActivity : AppCompatActivity() {
         lifecycleScope.launch {
             loadRandom()
         }
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
 
-        // Podłącz listener do EditText tak jak w AddFriendsActivity:
         binding.etSearch.addTextChangedListener { editable ->
             val query = editable?.toString().orEmpty()
             lifecycleScope.launch {
@@ -70,15 +66,11 @@ class SearchActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 adapter.submitList(listOf(randomMovie))
             }
-        } else {
-            // można wyczyścić listę: adapter.submitList(emptyList())
         }
     }
 
     /** Wyszukiwanie po zapytaniu q */
     private suspend fun performSearch(q: String) {
-        // Możesz ewentualnie pominąć wywołanie, gdy q jest puste:
-        // if (q.isBlank()) { adapter.submitList(emptyList()); return }
         val list = repo.search(q)
         withContext(Dispatchers.Main) {
             adapter.submitList(list)

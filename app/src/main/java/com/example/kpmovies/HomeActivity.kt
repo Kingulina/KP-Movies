@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.kpmovies.data.local.AppDatabase
 import com.example.kpmovies.databinding.ActivityHomeBinding
-import com.example.kpmovies.ui.adapter.RecentAdapter
-import com.example.kpmovies.ui.adapter.RecentItem
+import com.example.kpmovies.ui.adapters.RecentAdapter
+import com.example.kpmovies.ui.adapters.RecentItem
 import com.example.kpmovies.ui.details.MovieDetailsActivity
 import com.example.kpmovies.ui.search.SearchActivity
 import kotlinx.coroutines.Dispatchers
@@ -25,14 +25,13 @@ class HomeActivity : AppCompatActivity() {
     private val db by lazy { AppDatabase.get(this) }
     private val scope by lazy { lifecycleScope }
 
-    private lateinit var recentAdapter: RecentAdapter         // <- przyjmuje RecentItem
+    private lateinit var recentAdapter: RecentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         b = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        /* ► pół-przezroczysty scrim Drawer --──────────────── */
         b.drawerLayout.setScrimColor(0x66000000)
 
         /* ► avatar + nick ─────────────────────────────────── */
@@ -42,7 +41,6 @@ class HomeActivity : AppCompatActivity() {
                 .findViewById<TextView>(R.id.drawerNickname).text = nick
         }
 
-        /* ► bottom nav ────────────────────────────────────── */
         b.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_search -> startActivity(Intent(this, SearchActivity::class.java))
@@ -51,7 +49,6 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-        /* ► drawer menu ───────────────────────────────────── */
         b.navView.setNavigationItemSelectedListener { m ->
             when (m.itemId) {
                 R.id.nav_watchlist -> startActivity(Intent(this, WatchListActivity::class.java))
@@ -63,7 +60,6 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-        /* ► Logout w headerze ─────────────────────────────── */
         b.navView.getHeaderView(0)
             .findViewById<ImageView>(R.id.btnLogout)
             .setOnClickListener {
@@ -75,7 +71,6 @@ class HomeActivity : AppCompatActivity() {
                 finish()
             }
 
-        /* ► sekcja: Today’s recommendations ———————————— */
         loadRecommendations()
 
         /* ► sekcja: Friends recent activity  ——————————— */
@@ -85,7 +80,6 @@ class HomeActivity : AppCompatActivity() {
         loadFriendsActivity()
     }
 
-    /* ───────────────── helpery ───────────────────────────── */
 
     private fun openMovie(movieId: String) =
         startActivity(Intent(this, MovieDetailsActivity::class.java).putExtra("id", movieId))
@@ -97,7 +91,6 @@ class HomeActivity : AppCompatActivity() {
 
         val (m1, m2) = allMovies.shuffled().take(2)
         withContext(Dispatchers.Main) {
-            // pierwszy
             Glide.with(this@HomeActivity)
                 .load(m1.poster)
                 .placeholder(R.drawable.placeholder)
@@ -105,7 +98,6 @@ class HomeActivity : AppCompatActivity() {
             b.tvRecTitle1.text = m1.title
             b.imgRec1.setOnClickListener { openMovie(m1.id) }
 
-            // drugi
             Glide.with(this@HomeActivity)
                 .load(m2.poster)
                 .placeholder(R.drawable.placeholder)
@@ -120,13 +112,12 @@ class HomeActivity : AppCompatActivity() {
 
         val me = SessionManager.getLogin(this@HomeActivity) ?: return@launch
 
-        // ▼--- POPRAWKA: od razu dostajemy listę loginów
-        val followees = db.friendDao().followsOf(me)          // już List<String>
-        if (followees.isEmpty()) return@launch                // gdy nikogo nie obserwuję
+
+        val followees = db.friendDao().followsOf(me)
+        if (followees.isEmpty()) return@launch
 
         val reviews = db.reviewDao().latestByUsers(followees, limit = 50)
 
-        /* mapujemy ReviewEntity → RecentItem */
         val items = reviews.mapNotNull { rev ->
             val movie = db.movieDao().one(rev.movieId) ?: return@mapNotNull null
             RecentItem(

@@ -37,7 +37,6 @@
             android:layout_marginStart="8dp"/>
 
 
-        <!-- toggle group -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/tabsGroup"
             android:layout_width="wrap_content"
@@ -65,7 +64,6 @@
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <!-- TU DODAJEMY RECYCLER VIEW zamiast statycznych posterów -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvList"
             android:layout_width="0dp"

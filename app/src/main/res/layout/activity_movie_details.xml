@@ -8,13 +8,11 @@
     android:fitsSystemWindows="true"
     app:statusBarBackground="@color/purple_700">
 
-    <!--  GŁÓWNA ZAWARTOŚĆ -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--  SCROLLABLE BODY  -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollContent"
             android:layout_width="0dp"
@@ -128,7 +126,6 @@
                         android:textSize="12sp"/>
                 </LinearLayout>
 
-                <!-- Meta-dane -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,16 +169,13 @@
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
-                    <!-- 2) gwiazdki (10 sztuk), poniżej etykiety -->
                     <RatingBar
                         android:id="@+id/ratingBar"
                         style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="209dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:isIndicator="false"
                         android:numStars="10"
-                        android:scaleX="1.8"
-                        android:scaleY="1.8"
                         android:stepSize="1" />
                 </LinearLayout>
 

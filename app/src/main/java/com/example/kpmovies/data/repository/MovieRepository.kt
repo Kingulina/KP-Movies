@@ -14,7 +14,7 @@ class MovieRepository(
     suspend fun search(query: String): List<MovieEntity> = withContext(Dispatchers.IO) {
         val net = remote.search(query = query).search.orEmpty()
         val entities = net.map { MovieEntity(it.imdbId, it.title, it.poster ?: "") }
-        movieDao.insertAll(entities)                    // → SQLite cache
+        movieDao.insertAll(entities)
         movieDao.searchLocal("%$query%")
     }
 

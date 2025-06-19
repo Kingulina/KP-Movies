@@ -8,8 +8,6 @@
     android:padding="16dp">
 
 
-
-
     <LinearLayout
         android:id="@+id/headerRow"
         android:layout_width="0dp"
@@ -26,10 +24,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
-            android:contentDescription="@string/settings"
             app:tint="@android:color/white"/>
 
-        <!-- odstęp między strzałką a trybikiem -->
 
         <Space
             android:layout_width="100dp"
@@ -44,7 +40,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="24sp"/>
-    <!-- Odstęp między ikoną a tekstem -->
+
     <Space
         android:layout_width="5dp"
         android:layout_height="0dp"/>

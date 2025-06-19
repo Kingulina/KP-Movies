@@ -1,7 +1,6 @@
 package com.example.kpmovies
 
-import com.example.kpmovies.data.local.AppDatabase // tylko w RegisterActivity
-import com.example.kpmovies.data.user.UserDao
+import com.example.kpmovies.data.local.AppDatabase
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -14,16 +13,14 @@ import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding   // ViewBinding
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /* ========  OBSŁUGA PRZYCISKÓW  ======== */
 
-        // 1️⃣  Logowanie (demo)
         binding.btnLogin.setOnClickListener {
             val login = binding.etLogin.text.toString()
             val pass  = binding.etPassword.text.toString()
@@ -50,13 +47,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // 2️⃣  Przejście do rejestracji
         binding.tvGoRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
-    /* ---------  Mała funkcja pomocnicza  ---------- */
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

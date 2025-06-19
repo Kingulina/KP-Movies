@@ -10,9 +10,9 @@ interface ReviewDao {
     @Query(
         """
         SELECT *
-        FROM reviews              -- ⬅ tabela w liczbie pojedynczej
+        FROM reviews             
         WHERE movieId = :movieId
-        ORDER BY created DESC    -- ⬅ kolumna  `created`
+        ORDER BY created DESC    
         """
     )
     suspend fun forMovie(movieId: String): List<ReviewEntity>

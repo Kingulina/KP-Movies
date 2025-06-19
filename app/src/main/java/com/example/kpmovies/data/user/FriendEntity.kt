@@ -4,7 +4,7 @@ import androidx.room.Entity
 
 @Entity(
     tableName = "friends",
-    primaryKeys = ["owner", "followee"]      // kompozytowy PK
+    primaryKeys = ["owner", "followee"]
 )
 data class FriendEntity(
     val owner: String,       // login zalogowanego uż.

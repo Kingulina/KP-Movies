@@ -1,4 +1,4 @@
-package com.example.kpmovies.ui          // <- dopasuj do folderu!
+package com.example.kpmovies.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,10 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kpmovies.data.user.UserEntity
 import com.example.kpmovies.databinding.ItemUserBinding
 
-/**
- * Prosty adapter wyświetlający login + ikonę.
- * Kliknięcie wiersza wywołuje lambdę przekazaną w konstruktorze.
- */
 class UserAdapter(
     private val onClick: (UserEntity) -> Unit
 ) : ListAdapter<UserEntity, UserAdapter.VH>(Diff) {

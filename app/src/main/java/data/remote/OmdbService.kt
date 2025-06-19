@@ -1,4 +1,4 @@
-package com.example.kpmovies.data.remote   // <-- nic więcej
+package com.example.kpmovies.data.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Query

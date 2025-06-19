@@ -2,7 +2,7 @@ package com.example.kpmovies.data.local.entity
 
 import androidx.room.*
 
-@Entity( tableName = "reviews")   //  ← **mnoga forma, jak w DAO**
+@Entity( tableName = "reviews")
 data class ReviewEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
 

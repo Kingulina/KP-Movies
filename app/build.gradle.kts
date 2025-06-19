@@ -23,7 +23,6 @@ android {
         versionName           = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        /**  ▼▼ BuildConfig.OMDB_KEY  */
         buildConfigField("String", "OMDB_KEY", "\"$omdbKey\"")
     }
 
@@ -46,7 +45,7 @@ android {
     buildFeatures {
         compose       = true
         viewBinding   = true
-        buildConfig   = true         //  ← konieczne dla BuildConfig
+        buildConfig   = true
     }
 }
 
@@ -97,7 +96,6 @@ dependencies {
 kapt {
     correctErrorTypes      = true
     includeCompileClasspath = true
-    /*  ▼ zapis schem Room do /app/schemas  */
     arguments {
         arg("room.schemaLocation", "$projectDir/schemas")
     }

@@ -33,10 +33,10 @@
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
-            android:exported="false" /> <!-- REJESTRACJA -->
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" /> <!-- LOGOWANIE – EKRAN STARTOWY -->
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">

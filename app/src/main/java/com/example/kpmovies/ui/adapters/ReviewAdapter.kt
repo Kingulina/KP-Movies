@@ -12,7 +12,6 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.VH>() {
 
     private val items = mutableListOf<ReviewEntity>()
 
-    /** podmień całą listę */
     fun submitList(list: List<ReviewEntity>) {
         items.clear()
         items.addAll(list)

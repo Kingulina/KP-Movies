@@ -10,7 +10,6 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kpmovies.data.local.AppDatabase
-import com.example.kpmovies.data.local.entity.MovieEntity
 import com.example.kpmovies.databinding.ActivityWatchListBinding
 import com.example.kpmovies.ui.adapter.MovieAdapter
 import com.example.kpmovies.ui.details.MovieDetailsActivity
@@ -37,7 +36,6 @@ class WatchListActivity : AppCompatActivity() {
             .findViewById<TextView>(R.id.drawerNickname)
             .text = me
 
-        // ─── Recycler + adapter ─────────────────────────────
         adapter = MovieAdapter { movie ->
             startActivity(
                 Intent(this, MovieDetailsActivity::class.java)
@@ -47,22 +45,19 @@ class WatchListActivity : AppCompatActivity() {
         b.rvList.layoutManager = GridLayoutManager(this, 2)
         b.rvList.adapter = adapter
 
-        // ─── ToggleGroup ────────────────────────────────────
+
         b.tabsGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
-                // whenever we switch, reload whichever tab
                 updateWatchedCount()
-                // if user selected the Watched tab, also refresh its count
                 loadTab(checkedId == R.id.btnWatchList)
             }
         }
-        // wymuśmy pierwsze ładowanie “Watch list”
+
         b.tabsGroup.check(R.id.btnWatchList)
         updateWatchedCount()
         loadTab(isWatchList = true)
 
 
-        // ─── Bottom nav ─────────────────────────────────────
         b.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home   ->
@@ -75,7 +70,6 @@ class WatchListActivity : AppCompatActivity() {
         }
         b.bottomNav.menu.findItem(R.id.nav_menu).isChecked = true
 
-        // ─── Drawer menu ────────────────────────────────────
         b.navView.setNavigationItemSelectedListener { m ->
             when(m.itemId) {
                 R.id.nav_homepage  ->
@@ -84,7 +78,6 @@ class WatchListActivity : AppCompatActivity() {
                     startActivity(Intent(this, SearchActivity::class.java))
                 R.id.nav_friends   ->
                     startActivity(Intent(this, FriendListActivity::class.java))
-                R.id.nav_watchlist -> { /* tu jesteśmy */ }
                 R.id.nav_settings  ->
                     startActivity(Intent(this, SettingsActivity::class.java))
             }
@@ -111,7 +104,7 @@ class WatchListActivity : AppCompatActivity() {
             } else {
                 db.watchlistDao().watched(me)
             }
-            // mapujemy WatchlistEntity → MovieEntity z naszego cache'u
+
             val movies = entries.mapNotNull { db.movieDao().one(it.movieId) }
             withContext(Dispatchers.Main) {
                 adapter.submitList(movies)

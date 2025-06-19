@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:padding="24dp">
 
-    <!-- Nagłówek -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"

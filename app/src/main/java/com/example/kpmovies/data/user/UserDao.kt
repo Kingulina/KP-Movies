@@ -14,7 +14,7 @@ interface UserDao {
     @Query("""
     SELECT * FROM users
     WHERE login LIKE '%' || :query || '%' 
-      AND login != :exclude          -- nie pokazuj mnie samego
+      AND login != :exclude          
     ORDER BY login
 """)
     suspend fun searchUsers(query: String, exclude: String): List<UserEntity>

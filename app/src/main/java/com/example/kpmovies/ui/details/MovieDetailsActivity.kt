@@ -47,12 +47,10 @@ class MovieDetailsActivity : AppCompatActivity() {
         b = ActivityMovieDetailsBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        // ─── Recyclerview recenzji ─────────────────────
         reviewAdapter = ReviewAdapter()
         b.rvReviews.layoutManager = LinearLayoutManager(this)
         b.rvReviews.adapter = reviewAdapter
 
-        // ─── Załaduj wszystkie dane ────────────────────
         lifecycleScope.launch {
             loadDetails()
             refreshAvg()
@@ -60,12 +58,11 @@ class MovieDetailsActivity : AppCompatActivity() {
             refreshWatchIcon()
         }
 
-        // ─── Toggle “do obejrzenia” (TODO / remove) ────
         b.btnAddWatch.setOnClickListener {
             lifecycleScope.launch {
                 val entry = watchDao.find(me, imdbId)
                 if (entry == null) {
-                    // nie było wcześniej → dodaj TODO
+
                     watchDao.upsert(
                         WatchlistEntity(
                             owner = me,
@@ -75,15 +72,13 @@ class MovieDetailsActivity : AppCompatActivity() {
                         )
                     )
                 } else if (entry.status == "TODO") {
-                    // było TODO → usuń
                     watchDao.remove(me, imdbId)
                 }
-                // jeśli WATCHED → nic
+
                 refreshWatchIcon()
             }
         }
 
-        // ─── Zapis recenzji (zawsze WATCHED) ───────────
         b.btnSaveReview.setOnClickListener {
             val rating = b.ratingBar.rating.toInt()
             val text   = b.etReview.text.toString()
@@ -96,7 +91,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                         text = text
                     )
                 )
-                // przełóż na WATCHED (nadpisze jeśli był TODO)
+
                 watchDao.upsert(
                     WatchlistEntity(
                         owner = me,
@@ -105,7 +100,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                         timestamp = System.currentTimeMillis()
                     )
                 )
-                // odśwież wszystko
+
                 loadDetails()
                 refreshAvg()
                 refreshReviews()
@@ -113,7 +108,6 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
         }
 
-        // ─── Drawer + bottom navigation ───────────────
         val nick = me
         b.tvNickname.text = nick
         b.navView.getHeaderView(0)
